@@ -1,0 +1,50 @@
+
+DATABASE ../database/minteq.v4.dat
+
+TITLE simulate soil pH titration with NaOH
+
+# Composition of soil solution in mmol/L
+SOLUTION 1
+units mmol/kgw
+temperature 	 25.0
+pH 7.4
+
+
+Na       160
+K        5
+Cl       143.05
+Hg(2)    0.025
+P    12
+
+USE SOLUTION 1
+EQUILIBRIUM_PHASE 1
+Hematite     0.0   0.0001
+
+
+SURFACE 1 Surface in equilibrium with solution 1
+Hfo_w Hematite Equilibrium_phase  1  1e3
+Hfo_s Hematite Equilibrium_phase  1  1e3
+
+-equil solution 1
+
+
+REACTION 1
+HCl 0.00001   # concentration is 0.1mol/L* 1mL each drop=0.0001mol for each reaction step
+
+1 in 1 steps
+
+SAVE SOLUTION 1
+
+SELECTED_OUTPUT
+-RESET false
+-FILE Hg_hematite10.txt
+
+USER_PUNCH
+-start
+-heading Hg(0)  Hg(2)  so_s_Hg   so_w_Hg
+
+10 PUNCH tot ('Hg(0)')  tot('Hg(2)')
+20 PUNCH MOL('Hfo_sOHg+') MOL('Hfo_wOHg+')
+
+-end
+END

@@ -1,0 +1,54 @@
+
+DATABASE ../database/minteq.v4.dat
+
+TITLE simulate soil pH titration with NaOH
+
+# Composition of soil solution in mmol/L
+SOLUTION 1
+units mmol/kgw
+temperature 	 25.0
+pH 7.4
+
+
+Na       160
+K        5
+Cl       143.05
+Hg(2)    0.025
+P    12
+
+
+
+
+#SURFACE 1 Surface in equilibrium with solution 1
+#Hfo_w 0.005 0.2 1.068E4
+#Hfo_s 0.0025 0.005 1.068E4
+
+#-equil solution 1
+
+
+# NaOH solution with pH = 13
+
+
+USE SOLUTION 1
+
+
+REACTION 1
+NaOH 0.0001   # concentration is 0.1mol/L* 1mL each drop=0.0001mol for each reaction step
+
+40 in 20 steps
+
+SAVE SOLUTION 1
+
+SELECTED_OUTPUT
+-RESET false
+-FILE Hg_lin.txt
+
+USER_PUNCH
+-start
+-heading pH Fe(2)
+
+10 PUNCH -la("H+")
+
+
+-end
+END
